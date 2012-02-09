@@ -191,7 +191,7 @@ Backbone.Marionette = (function(Backbone, _, $){
       _.bindAll(this, "addChildView", "render");
       this.bindTo(this.collection, "add", this.addChildView, this);
       this.bindTo(this.collection, "remove", this.removeChildView, this);
-      this.bindTo(this.collection, "reset", this.render, this);
+      this.bindTo(this.collection, "reset", this.reset, this);
     },
 
     // Loop through all of the items and render 
@@ -236,6 +236,15 @@ Backbone.Marionette = (function(Backbone, _, $){
         delete this.children[item.cid];
       }
     },
+		
+    // Remove all child views when collection is reset
+    reset: function(){
+			var that = this;
+			_.each(this.children, function(childView){
+				that.removeChildView(childView.model);
+			});
+			this.render();
+		},
 
     // Append the HTML to the collection's `el`.
     // Override this method to do something other
